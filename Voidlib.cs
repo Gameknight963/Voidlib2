@@ -52,11 +52,13 @@ namespace VoidLib
             }
             if (name != null) { newButton.name = name; }
 
-            // disable the two listeners cause you can't remove persistent listners
             UIButtonCore buttonScript = newButton.GetComponent<UIButtonCore>();
             MelonLogger.Msg(buttonScript.onClick.GetPersistentEventCount());
-            buttonScript.onClick.SetPersistentListenerState(0, UnityEngine.Events.UnityEventCallState.Off);
-            buttonScript.onClick.SetPersistentListenerState(1, UnityEngine.Events.UnityEventCallState.Off);
+            // replace the event with our own
+            buttonScript.onClick = new UnityEngine.Events.UnityEvent();
+            // you can disable the listeners instead, but the above line makes sure they're fully gone
+            //buttonScript.onClick.SetPersistentListenerState(0, UnityEngine.Events.UnityEventCallState.Off);
+            //buttonScript.onClick.SetPersistentListenerState(1, UnityEngine.Events.UnityEventCallState.Off);
 
             return newButton;
         }
