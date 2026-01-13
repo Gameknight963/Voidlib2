@@ -4,7 +4,6 @@ using Il2CppInterop;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Il2CppInterop.Runtime.Runtime;
 
 namespace VoidLib
 {
@@ -38,10 +37,6 @@ namespace VoidLib
             GameObject newButtonText = newButton.transform.Find("Text").gameObject;
             RectTransform RectTransform = newButton.GetComponent<RectTransform>();
 
-            //UIButtonCore UIButtonCore = newButton.GetComponent<UIButtonCore>();
-            //if (UIButtonCore = null) { MelonLogger.Error("[Voidlib] UIButtonCore is null!"); }
-            //UIButtonCore.onClick.RemoveAllListeners();
-
             if (pos2d != null) { RectTransform.anchoredPosition = pos2d; }
 
             RectTransform.localScale = new Vector3(length, RectTransform.localScale.y, RectTransform.localScale.z);
@@ -56,6 +51,13 @@ namespace VoidLib
                 textAsset.m_Text = text;
             }
             if (name != null) { newButton.name = name; }
+
+            // disable the two listeners cause you can't remove persistent listners
+            UIButtonCore buttonScript = newButton.GetComponent<UIButtonCore>();
+            MelonLogger.Msg(buttonScript.onClick.GetPersistentEventCount());
+            buttonScript.onClick.SetPersistentListenerState(0, UnityEngine.Events.UnityEventCallState.Off);
+            buttonScript.onClick.SetPersistentListenerState(1, UnityEngine.Events.UnityEventCallState.Off);
+
             return newButton;
         }
 
