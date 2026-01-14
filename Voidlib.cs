@@ -1,22 +1,24 @@
-﻿using MelonLoader;
-using Il2Cpp;
+﻿using Il2Cpp;
 using Il2CppInterop;
+using MelonLoader;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System;
+using UnityEngine.UIElements;
 
 namespace VoidLib
 {
     public class PauseMenu : MelonMod
     {
-        public enum ButtonSize
+        public enum ButtonType
         {
-            Small,
+            SmallL,
+            SmallR,
             Big
         }
 
-        static public GameObject AddMenuButton(Vector2 pos2d, buttonSize size, string text, string name)
+        static public GameObject AddMenuButton(float posY, ButtonType buttonType, string text, string name)
         {
             /// <summary>Adds a new menu button</summary>
             /// <param name="pos2d">The position of the button returned in the menu's plane.</param>
@@ -32,12 +34,19 @@ namespace VoidLib
             if (SceneManager.GetActiveScene().name != "Version 1.9 POST") { return null; }
             GameObject mainMenu = GameObject.Find("Menu");
 
-            GameObject newButton;
-            if (size = ButtonSize.Small)
+            RectTransform RectTransform = null;
+            GameObject newButton = null;
+            if (buttonType == ButtonType.SmallL)
             {
                 newButton = UnityEngine.Object.Instantiate(GameObject.Find("Return"), mainMenu.transform);
             }
-            else if (size = ButtonSize.Big)
+            else if (buttonType == ButtonType.SmallR)
+            {
+                newButton = UnityEngine.Object.Instantiate(GameObject.Find("Return"), mainMenu.transform);
+                RectTransform = newButton.GetComponent<RectTransform>();
+                RectTransform.anchoredPosition = new Vector2(20f, RectTransform.anchoredPosition.y);
+            }
+            else if (buttonType == ButtonType.Big)
             {
                 newButton = UnityEngine.Object.Instantiate(GameObject.Find("Resume"), mainMenu.transform);
             }
@@ -45,9 +54,12 @@ namespace VoidLib
             GameObject newButtonFrame = newButton.transform.Find("Frame").gameObject;
             RectTransform frameRectTransform = newButtonFrame.GetComponent<RectTransform>();
             GameObject newButtonText = newButton.transform.Find("Text").gameObject;
-            RectTransform RectTransform = newButton.GetComponent<RectTransform>();
 
-            if (pos2d != null) { RectTransform.anchoredPosition = pos2d; }
+            if (RectTransform == null)
+            {
+                RectTransform = newButton.GetComponent<RectTransform>();
+                RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
+            }
 
             if (text != null)
             {
