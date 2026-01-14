@@ -21,8 +21,8 @@ namespace VoidLib
         static public GameObject AddMenuButton(float posY, ButtonType buttonType, string text, string name)
         {
             /// <summary>Adds a new menu button</summary>
-            /// <param name="pos2d">The position of the button returned in the menu's plane.</param>
-            /// <param name="length">The length (x scale) of the button returned.</param>
+            /// <param name="posY">The Y position in the menu's plane) of the button to be returned.</param>
+            /// <param name="buttonType">The ButtonType of the button returned. Use the ButtonType enum.</param>
             /// <param name="text">The text of the button returned.</param>
             /// <param name="name">The name of the button returned.</param>
             /// <returns>The new menu button GameObject. If not called while Version 1.9 POST is active, returns null.</returns>
