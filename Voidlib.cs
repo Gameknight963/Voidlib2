@@ -67,7 +67,8 @@ namespace VoidLib
             return newButton;
         }
 
-        // Feature not implemented
+        // Features not implemented
         //static public GameObject AddMenuGroup()
+        //static public GameObject AddMenuSlider()
     }
 }
