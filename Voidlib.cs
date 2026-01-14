@@ -34,15 +34,17 @@ namespace VoidLib
 
             GameObject newButton = Object.Instantiate(exitButton, mainMenu.transform);
             GameObject newButtonFrame = newButton.transform.Find("Frame").gameObject;
+            RectTransform frameRectTransform = newButtonFrame.GetComponent<RectTransform>();
             GameObject newButtonText = newButton.transform.Find("Text").gameObject;
             RectTransform RectTransform = newButton.GetComponent<RectTransform>();
 
             if (pos2d != null) { RectTransform.anchoredPosition = pos2d; }
 
-            RectTransform.localScale = new Vector3(length, RectTransform.localScale.y, RectTransform.localScale.z);
-            RectTransform.anchoredPosition = new Vector2(
-            RectTransform.anchoredPosition.x + length*50- 74.775f, // dont fucking touch these numbers
-            RectTransform.anchoredPosition.y);
+            // RectTransform.localScale = new Vector3(length, RectTransform.localScale.y, RectTransform.localScale.z);
+            frameRectTransform.localScale = new Vector3(length, frameRectTransform.localScale.y, frameRectTransform.localScale.z);
+            //RectTransform.anchoredPosition = new Vector2(
+            //RectTransform.anchoredPosition.x + length*50- 74.775f, // dont fucking touch these numbers
+            //RectTransform.anchoredPosition.y);
 
 
             if (text != null)
