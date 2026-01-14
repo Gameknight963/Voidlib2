@@ -4,13 +4,19 @@ using Il2CppInterop;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 namespace VoidLib
 {
     public class PauseMenu : MelonMod
     {
+        public enum ButtonSize
+        {
+            Small,
+            Big
+        }
 
-        static public GameObject AddMenuButton(Vector2 pos2d, float length, string text, string name)
+        static public GameObject AddMenuButton(Vector2 pos2d, buttonSize size, string text, string name)
         {
             /// <summary>Adds a new menu button</summary>
             /// <param name="pos2d">The position of the button returned in the menu's plane.</param>
@@ -24,28 +30,24 @@ namespace VoidLib
             // RectTransform.eulerAngles = 49.855f, 133.9941f, 355.2355f
             // Transform.localScale = 1.4955f, 0.8439f, 4.4859f
             if (SceneManager.GetActiveScene().name != "Version 1.9 POST") { return null; }
-            GameObject exitButton = GameObject.Find("Return");
             GameObject mainMenu = GameObject.Find("Menu");
-            if (exitButton == null)
+
+            GameObject newButton;
+            if (size = ButtonSize.Small)
             {
-                MelonLogger.Error("Return button not found! Adding new button fails");
-                return null;
+                newButton = UnityEngine.Object.Instantiate(GameObject.Find("Return"), mainMenu.transform);
+            }
+            else if (size = ButtonSize.Big)
+            {
+                newButton = UnityEngine.Object.Instantiate(GameObject.Find("Resume"), mainMenu.transform);
             }
 
-            GameObject newButton = Object.Instantiate(exitButton, mainMenu.transform);
             GameObject newButtonFrame = newButton.transform.Find("Frame").gameObject;
             RectTransform frameRectTransform = newButtonFrame.GetComponent<RectTransform>();
             GameObject newButtonText = newButton.transform.Find("Text").gameObject;
             RectTransform RectTransform = newButton.GetComponent<RectTransform>();
 
             if (pos2d != null) { RectTransform.anchoredPosition = pos2d; }
-
-            // RectTransform.localScale = new Vector3(length, RectTransform.localScale.y, RectTransform.localScale.z);
-            frameRectTransform.localScale = new Vector3(length, frameRectTransform.localScale.y, frameRectTransform.localScale.z);
-            //RectTransform.anchoredPosition = new Vector2(
-            //RectTransform.anchoredPosition.x + length*50- 74.775f, // dont fucking touch these numbers
-            //RectTransform.anchoredPosition.y);
-
 
             if (text != null)
             {
@@ -55,7 +57,6 @@ namespace VoidLib
             if (name != null) { newButton.name = name; }
 
             UIButtonCore buttonScript = newButton.GetComponent<UIButtonCore>();
-            MelonLogger.Msg(buttonScript.onClick.GetPersistentEventCount());
             // replace the event with our own
             buttonScript.onClick = new UnityEngine.Events.UnityEvent();
             // you can disable the listeners instead, but the above line makes sure they're fully gone
