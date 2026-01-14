@@ -26,11 +26,6 @@ namespace VoidLib
             /// <param name="text">The text of the button returned.</param>
             /// <param name="name">The name of the button returned.</param>
             /// <returns>The new menu button GameObject. If not called while Version 1.9 POST is active, returns null.</returns>
-            /// 
-            // For refrence, the "Exit" button (named "Return") has these properties:
-            // RectTransform.anchoredPosition = -305.0003f, -120.0001f
-            // RectTransform.eulerAngles = 49.855f, 133.9941f, 355.2355f
-            // Transform.localScale = 1.4955f, 0.8439f, 4.4859f
             if (SceneManager.GetActiveScene().name != "Version 1.9 POST") { return null; }
             GameObject mainMenu = GameObject.Find("Menu");
 
@@ -66,15 +61,9 @@ namespace VoidLib
                 Text textAsset = newButtonText.GetComponent<Text>();
                 textAsset.m_Text = text;
             }
-            if (name != null) { newButton.name = name; }
-
+            newButton.name = name;
             UIButtonCore buttonScript = newButton.GetComponent<UIButtonCore>();
-            // replace the event with our own
             buttonScript.onClick = new UnityEngine.Events.UnityEvent();
-            // you can disable the listeners instead, but the above line makes sure they're fully gone
-            //buttonScript.onClick.SetPersistentListenerState(0, UnityEngine.Events.UnityEventCallState.Off);
-            //buttonScript.onClick.SetPersistentListenerState(1, UnityEngine.Events.UnityEventCallState.Off);
-
             return newButton;
         }
 
