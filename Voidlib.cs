@@ -45,21 +45,21 @@ namespace VoidLib
             {
                 case ButtonType.SmallL:
                     newButton = UnityEngine.Object.Instantiate(
-                        GameObject.Find("Return"), mainMenu.transform);
+                    GameObject.Find("Return"), mainMenu.transform);
                     RectTransform = newButton.GetComponent<RectTransform>();
                     RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
                     break;
 
                 case ButtonType.SmallR:
                     newButton = UnityEngine.Object.Instantiate(
-                        GameObject.Find("Return"), mainMenu.transform);
+                    GameObject.Find("Return"), mainMenu.transform);
                     RectTransform rectTransform = newButton.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(20f, rectTransform.anchoredPosition.y);
                     break;
 
                 case ButtonType.Big:
                     newButton = UnityEngine.Object.Instantiate(
-                        GameObject.Find("Resume"), mainMenu.transform);
+                    GameObject.Find("Resume"), mainMenu.transform);
                     RectTransform = newButton.GetComponent<RectTransform>();
                     RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
                     break;
