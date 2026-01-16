@@ -98,11 +98,11 @@ namespace VoidLib
             fov,
             sensitivity,
         }
-        public object GetSetting(GameSetting setting)
+        public float GetSetting(GameSetting setting)
         {
             if (settingsManager == null)
             {
-
+                throw new InvalidOperationException("SettingsManager not found!");
             }
             switch (setting)
             {
@@ -113,12 +113,27 @@ namespace VoidLib
             }
             throw new ArgumentException($"GameSetting {setting} is invalid, idk how you broke an enum but you did");
         }
+        public void ChangeSetting(GameSetting setting, float value)
+        {
+            if (settingsManager == null)
+            {
+                throw new InvalidOperationException("SettingsManager not found!");
+            }
+            switch (setting)
+            {
+                case GameSetting.fov:
+                    settingsManager.fov = value;
+                    return;
+                case GameSetting.sensitivity:
+                    settingsManager.sensitivity = value;
+                    return;
+                throw new ArgumentException($"GameSetting {setting} is invalid");
+            }
+        }
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
         {
-            if (sceneName == "Version 1.9 POST")
-            {
-                settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
-            }
+            if (sceneName != "Version 1.9 POST") { return; }
+            settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
         }
     }
 }
