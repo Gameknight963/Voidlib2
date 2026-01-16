@@ -31,7 +31,11 @@ namespace VoidLib
             /// <returns>The new menu button GameObject. If not called while Version 1.9 POST is active, throws an exception.</returns>
             if (SceneManager.GetActiveScene().name != "Version 1.9 POST")
             {
-                throw new InvalidOperationException("Version 1.9 POST is the active scene!");
+                throw new InvalidOperationException("Version 1.9 POST is not active!");
+            }
+            if (text == null)
+            {
+                throw new ArgumentException("Text cannot be null");
             }
             GameObject mainMenu = GameObject.Find("Menu");
 
@@ -42,6 +46,8 @@ namespace VoidLib
                 case ButtonType.SmallL:
                     newButton = UnityEngine.Object.Instantiate(
                         GameObject.Find("Return"), mainMenu.transform);
+                    RectTransform = newButton.GetComponent<RectTransform>();
+                    RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
                     break;
 
                 case ButtonType.SmallR:
@@ -54,24 +60,16 @@ namespace VoidLib
                 case ButtonType.Big:
                     newButton = UnityEngine.Object.Instantiate(
                         GameObject.Find("Resume"), mainMenu.transform);
+                    RectTransform = newButton.GetComponent<RectTransform>();
+                    RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
                     break;
             }
 
             GameObject newButtonFrame = newButton.transform.Find("Frame").gameObject;
             RectTransform frameRectTransform = newButtonFrame.GetComponent<RectTransform>();
             GameObject newButtonText = newButton.transform.Find("Text").gameObject;
-
-            if (RectTransform == null)
-            {
-                RectTransform = newButton.GetComponent<RectTransform>();
-                RectTransform.anchoredPosition = new Vector2(RectTransform.anchoredPosition.x, posY);
-            }
-
-            if (text != null)
-            {
-                Text textAsset = newButtonText.GetComponent<Text>();
-                textAsset.m_Text = text;
-            }
+            Text textAsset = newButtonText.GetComponent<Text>();
+            textAsset.m_Text = text;
             newButton.name = name;
             UIButtonCore buttonScript = newButton.GetComponent<UIButtonCore>();
             buttonScript.onClick = new UnityEngine.Events.UnityEvent();
