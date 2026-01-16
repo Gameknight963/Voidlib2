@@ -28,7 +28,7 @@ namespace VoidLib
             /// <param name="buttonType">The ButtonType of the button returned. Use the ButtonType enum.</param>
             /// <param name="text">The text of the button returned.</param>
             /// <param name="name">The name of the button returned.</param>
-            /// <returns>The new menu button GameObject. If not called while Version 1.9 POST is active, returns null.</returns>
+            /// <returns>The new menu button GameObject. If not called while Version 1.9 POST is active, throws an exception.</returns>
             if (SceneManager.GetActiveScene().name != "Version 1.9 POST")
             {
                 throw new InvalidOperationException("Version 1.9 POST is the active scene!");
