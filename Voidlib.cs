@@ -92,14 +92,16 @@ namespace VoidLib
     }
     public class Player : MelonMod
     {
-        SettingsManager settingsManager = null;
+        static SettingsManager settingsManager = null;
+        GameObject prefs;
         public enum GameSetting
         {
             fov,
             sensitivity,
         }
-        public float GetSetting(GameSetting setting)
+        public static float GetSetting(GameSetting setting)
         {
+            settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
             if (settingsManager == null)
             {
                 throw new InvalidOperationException("SettingsManager not found!");
@@ -113,8 +115,9 @@ namespace VoidLib
             }
             throw new ArgumentException($"GameSetting {setting} is invalid, idk how you broke an enum but you did");
         }
-        public void ChangeSetting(GameSetting setting, float value)
+        public static void ChangeSetting(GameSetting setting, float value)
         {
+            settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
             if (settingsManager == null)
             {
                 throw new InvalidOperationException("SettingsManager not found!");
@@ -129,11 +132,6 @@ namespace VoidLib
                     return;
                 throw new ArgumentException($"GameSetting {setting} is invalid");
             }
-        }
-        public override void OnSceneWasInitialized(int buildIndex, string sceneName)
-        {
-            if (sceneName != "Version 1.9 POST") { return; }
-            settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
         }
     }
 }
