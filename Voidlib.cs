@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 
 namespace VoidLib
 {
-    public class PauseMenu : MelonMod
+    public class DynamicMenuEditor : MelonMod
     {
         public enum ButtonType
         {
@@ -102,6 +102,7 @@ namespace VoidLib
         public static float GetSetting(GameSetting setting)
         {
             settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
+
             if (settingsManager == null)
             {
                 throw new InvalidOperationException("SettingsManager not found!");
@@ -132,6 +133,21 @@ namespace VoidLib
                     return;
                 throw new ArgumentException($"GameSetting {setting} is invalid");
             }
+        }
+    }
+    public class WorldActions : MelonMod
+    {
+        public static void SetExitDoorEnabled(bool state)
+        {
+            GameObject.Find("ExitDoor").SetActive(state);
+            GameObject.Find("I Exit Door 1").SetActive(state);
+            GameObject.Find("I ExitDoor 2").SetActive(state);
+        }
+        public static void SetExitDoorCollison(bool state)
+        {
+            GameObject.Find("ExitDoor").GetComponent<BoxCollider>().enabled = false;
+            GameObject.Find("I Exit Door 1").GetComponent<BoxCollider>().enabled = false;
+            GameObject.Find("I ExitDoor 2").GetComponent<BoxCollider>().enabled = false;
         }
     }
 }
