@@ -139,15 +139,15 @@ namespace VoidLib
     {
         public static void SetExitDoorEnabled(bool state)
         {
-            GameObject.Find("ExitDoor").SetActive(state);
-            GameObject.Find("I Exit Door 1").SetActive(state);
-            GameObject.Find("I ExitDoor 2").SetActive(state);
+            GameObject.Find("World/House/Doors/ExitFrame/ExitDoor").SetActive(state);
+            GameObject.Find("World/Game/Acts/Hello Mita/Interactables 1/I Exit Door 1 ").SetActive(state);
+            GameObject.Find("World/Game/Acts/Quality Time/Interactables 2/I ExitDoor 2").SetActive(state);
         }
         public static void SetExitDoorCollison(bool state)
         {
-            GameObject.Find("ExitDoor").GetComponent<BoxCollider>().enabled = false;
-            GameObject.Find("I Exit Door 1").GetComponent<BoxCollider>().enabled = false;
-            GameObject.Find("I ExitDoor 2").GetComponent<BoxCollider>().enabled = false;
+            GameObject.Find("World/House/Doors/ExitFrame/ExitDoor").GetComponent<BoxCollider>().enabled = false;
+            GameObject.Find("World/Game/Acts/Hello Mita/Interactables 1/I Exit Door 1 ").GetComponent<BoxCollider>().enabled = false;
+            GameObject.Find("World/Game/Acts/Quality Time/Interactables 2/I ExitDoor 2").GetComponent<BoxCollider>().enabled = false;
         }
     }
 }
