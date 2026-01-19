@@ -150,4 +150,27 @@ namespace VoidLib
             GameObject.Find("World/Game/Acts/Quality Time/Interactables 2/I ExitDoor 2").GetComponent<BoxCollider>().enabled = false;
         }
     }
+    public static class ShaderUtils
+    {
+        /// <summary>
+        /// Sets the shader of all MeshRenderers in the GameObject and its children.
+        /// </summary>
+        /// <param name="root">The root GameObject.</param>
+        /// <param name="shader">The shader to assign.</param>
+        public static void SetShaderRecursively(GameObject root, Shader shader)
+        {
+            if (root == null || shader == null) return;
+
+            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>(true);
+
+            foreach (MeshRenderer mr in renderers)
+            {
+                Material[] mats = mr.materials;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    mats[i].shader = shader;
+                }
+            }
+        }
+    }
 }
