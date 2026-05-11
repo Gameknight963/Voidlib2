@@ -1,7 +1,6 @@
 ﻿using Il2Cpp;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using static MelonLoader.MelonLogger;
 
 namespace VoidLib2
 {
@@ -9,9 +8,7 @@ namespace VoidLib2
     {
         private static readonly System.Reflection.FieldInfo? _colorGradingField;
 
-        private static SettingsManager? _instance;
-        private static SettingsManager Instance =>
-            _instance ??= GameObject.FindObjectOfType<SettingsManager>();
+        public static readonly SettingsManager Instance = Il2Cpp.Void.instance.settings;
 
         static Settings()
         {
