@@ -26,7 +26,12 @@ namespace VoidLib2
 
         static AudioImporter()
         {
-            NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
+            bool inited = NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
+            if (!inited)
+            {
+                int code = NativeBass.BASS_ErrorGetCode();
+                throw new Exception($"BASS init failed with error {code}");
+            }
         }
 
         public static AudioClip? LoadAudio(string filePath, out BassError? error)
@@ -38,14 +43,6 @@ namespace VoidLib2
             }
             // Flags: BASS_SAMPLE_FLOAT (256) | BASS_STREAM_DECODE (2097152) | BASS_UNICODE (0x80000000)
             uint flags = 256 | 2097152 | 0x80000000;
-
-            int initError = NativeBass.BASS_ErrorGetCode();
-            if (initError != 0)
-            {
-                int code = NativeBass.BASS_ErrorGetCode();
-                error = new BassError(code, $"init error {code}", BassErrorType.Init);
-                return null;
-            }
 
             int handle = NativeBass.BASS_StreamCreateFile(false, filePath, 0, 0, flags);
             if (handle == 0)
