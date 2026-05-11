@@ -383,6 +383,12 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>..\00_MSZ_DLLS\UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="VGltf">
+      <HintPath>..\launcher.NET\bin\Debug\net10.0-windows\games\New game_e01109d5-f439-40d7-9fe2-c0581a7dd938\UserLibs\VGltf.dll</HintPath>
+    </Reference>
+    <Reference Include="VJson">
+      <HintPath>..\launcher.NET\bin\Debug\net10.0-windows\games\New game_e01109d5-f439-40d7-9fe2-c0581a7dd938\UserLibs\VJson.dll</HintPath>
+    </Reference>
     <Reference Include="WebSocketDotNet">
       <HintPath>msz_deps\net6\WebSocketDotNet.dll</HintPath>
     </Reference>
