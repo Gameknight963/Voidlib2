@@ -2,6 +2,9 @@
 
 namespace VoidLib2
 {
+    /// <summary>
+    /// Requires bass.dll
+    /// </summary>
     public static class AudioImporter
     {
         static AudioImporter()

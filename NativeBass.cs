@@ -4,6 +4,9 @@ namespace VoidLib2
 {
     // get base.dll at https://www.un4seen.com/
 
+    /// <summary>
+    /// Requires bass.dll
+    /// </summary>
     public class NativeBass
     {
         private const string BASS_LIB = "bass";
