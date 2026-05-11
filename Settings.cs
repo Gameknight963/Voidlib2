@@ -8,7 +8,7 @@ namespace VoidLib2
     {
         private static readonly System.Reflection.FieldInfo? _colorGradingField;
 
-        public static readonly SettingsManager Instance = Il2Cpp.Void.instance.settings;
+        public static readonly SettingsManager SettingsInstance = Il2Cpp.Void.instance.settings;
 
         static Settings()
         {
@@ -22,65 +22,65 @@ namespace VoidLib2
         /// <summary>Master volume in the range (0, 1].</summary>
         public static float MasterVolume
         {
-            get => Instance.settings.masterVolume;
+            get => SettingsInstance.settings.masterVolume;
             set
             {
-                Instance.settings.masterVolume = value;
-                Instance.mixer.SetFloat("Master", Mathf.Log10(value) * 20f);
+                SettingsInstance.settings.masterVolume = value;
+                SettingsInstance.mixer.SetFloat("Master", Mathf.Log10(value) * 20f);
             }
         }
 
         /// <summary>Music volume in the range (0, 1].</summary>
         public static float MusicVolume
         {
-            get => Instance.settings.musicVolume;
+            get => SettingsInstance.settings.musicVolume;
             set
             {
-                Instance.settings.musicVolume = value;
-                Instance.mixer.SetFloat("Music", Mathf.Log10(value) * 20f);
+                SettingsInstance.settings.musicVolume = value;
+                SettingsInstance.mixer.SetFloat("Music", Mathf.Log10(value) * 20f);
             }
         }
 
         /// <summary>SFX volume in the range (0, 1].</summary>
         public static float SFXVolume
         {
-            get => Instance.settings.fxVolume;
+            get => SettingsInstance.settings.fxVolume;
             set
             {
-                Instance.settings.fxVolume = value;
-                Instance.mixer.SetFloat("SFX", Mathf.Log10(value) * 20f);
+                SettingsInstance.settings.fxVolume = value;
+                SettingsInstance.mixer.SetFloat("SFX", Mathf.Log10(value) * 20f);
             }
         }
 
         /// <summary>Vocal volume in the range (0, 1].</summary>
         public static float VocalVolume
         {
-            get => Instance.settings.vocalVolume;
+            get => SettingsInstance.settings.vocalVolume;
             set
             {
-                Instance.settings.vocalVolume = value;
-                Instance.mixer.SetFloat("Vocals", Mathf.Log10(value) * 20f);
+                SettingsInstance.settings.vocalVolume = value;
+                SettingsInstance.mixer.SetFloat("Vocals", Mathf.Log10(value) * 20f);
             }
         }
 
         /// <summary>Ambience volume in the range (0, 1].</summary>
         public static float AmbienceVolume
         {
-            get => Instance.settings.ambient;
+            get => SettingsInstance.settings.ambient;
             set
             {
-                Instance.settings.ambient = value;
-                Instance.mixer.SetFloat("Ambience", Mathf.Log10(value) * 20f);
+                SettingsInstance.settings.ambient = value;
+                SettingsInstance.mixer.SetFloat("Ambience", Mathf.Log10(value) * 20f);
             }
         }
 
         /// <summary>Whether the game runs in fullscreen mode.</summary>
         public static bool Fullscreen
         {
-            get => Instance.settings.fullscreen;
+            get => SettingsInstance.settings.fullscreen;
             set
             {
-                Instance.settings.fullscreen = value;
+                SettingsInstance.settings.fullscreen = value;
                 Screen.fullScreen = value;
             }
         }
@@ -88,10 +88,10 @@ namespace VoidLib2
         /// <summary>Whether VSync is enabled.</summary>
         public static bool VSync
         {
-            get => Instance.settings.VSync;
+            get => SettingsInstance.settings.VSync;
             set
             {
-                Instance.settings.VSync = value;
+                SettingsInstance.settings.VSync = value;
                 QualitySettings.vSyncCount = value ? 1 : 0;
             }
         }
@@ -99,11 +99,11 @@ namespace VoidLib2
         /// <summary>Field of view in degrees. Also applies to the player camera if available.</summary>
         public static float FOV
         {
-            get => Instance.settings.fov;
+            get => SettingsInstance.settings.fov;
             set
             {
-                Instance.settings.fov = value;
-                Instance.fov = value;
+                SettingsInstance.settings.fov = value;
+                SettingsInstance.fov = value;
                 if (PlayerManager.instance && PlayerManager.instance.playerCam)
                     PlayerManager.instance.playerCam.fieldOfView = value;
             }
@@ -112,11 +112,11 @@ namespace VoidLib2
         /// <summary>Mouse sensitivity. Also applies to the player look component if available.</summary>
         public static float Sensitivity
         {
-            get => Instance.settings.sensitivity;
+            get => SettingsInstance.settings.sensitivity;
             set
             {
-                Instance.settings.sensitivity = value;
-                Instance.sensitivity = value;
+                SettingsInstance.settings.sensitivity = value;
+                SettingsInstance.sensitivity = value;
                 if (PlayerManager.instance && PlayerManager.instance.look)
                     PlayerManager.instance.look.sensitivity = value;
             }
@@ -125,10 +125,10 @@ namespace VoidLib2
         /// <summary>Screen brightness via post-processing color grading.</summary>
         public static float Brightness
         {
-            get => Instance.settings.brightness;
+            get => SettingsInstance.settings.brightness;
             set
             {
-                Instance.settings.brightness = value;
+                SettingsInstance.settings.brightness = value;
                 ColorGrading? cg = GetColorGrading();
                 if (cg != null)
                     cg.brightness.value = value;
@@ -138,10 +138,10 @@ namespace VoidLib2
         /// <summary>Quality level index as defined in Unity's Quality Settings.</summary>
         public static int Quality
         {
-            get => (int)Instance.settings.qualityIndex;
+            get => (int)SettingsInstance.settings.qualityIndex;
             set
             {
-                Instance.settings.qualityIndex = value;
+                SettingsInstance.settings.qualityIndex = value;
                 QualitySettings.SetQualityLevel(value);
             }
         }
@@ -149,12 +149,12 @@ namespace VoidLib2
         /// <summary>Anti-aliasing level as a 0-3 index into { 0, 2, 4, 8 } sample counts.</summary>
         public static int AntiAliasing
         {
-            get => Mathf.RoundToInt(Instance.settings.aaLevel);
+            get => Mathf.RoundToInt(SettingsInstance.settings.aaLevel);
             set
             {
                 int[] aaOptions = { 0, 2, 4, 8 };
                 value = Mathf.Clamp(value, 0, aaOptions.Length - 1);
-                Instance.settings.aaLevel = value;
+                SettingsInstance.settings.aaLevel = value;
                 QualitySettings.antiAliasing = aaOptions[value];
             }
         }
