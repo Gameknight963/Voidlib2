@@ -11,7 +11,7 @@ namespace VoidLib2
         [DllImport(BASS_LIB)]
         public static extern bool BASS_Init(int device, int freq, uint flags, IntPtr win, IntPtr clsid);
 
-        [DllImport(BASS_LIB)]
+        [DllImport(BASS_LIB, CharSet = CharSet.Unicode)]
         public static extern int BASS_StreamCreateFile(bool mem, string file, long offset, long length, uint flags);
 
         [DllImport(BASS_LIB)]
@@ -25,6 +25,9 @@ namespace VoidLib2
 
         [DllImport(BASS_LIB)]
         public static extern bool BASS_StreamFree(int handle);
+
+        [DllImport(BASS_LIB)]
+        public static extern int BASS_ErrorGetCode();
 
         [StructLayout(LayoutKind.Sequential)]
         public struct BASS_CHANNELINFO
