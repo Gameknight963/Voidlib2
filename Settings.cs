@@ -5,12 +5,7 @@ namespace VoidLib2
 {
     public static class Settings
     {
-        static readonly SettingsManager settingsManager;
-
-        static Settings()
-        {
-            settingsManager = GameObject.Find("PlayerPrefs").GetComponent<SettingsManager>();
-        }
+        static readonly SettingsManager SettingsManager = Il2Cpp.Void.instance.settings;
 
         public enum GameSetting
         {
@@ -21,8 +16,8 @@ namespace VoidLib2
         {
             return setting switch
             {
-                GameSetting.fov => settingsManager.fov,
-                GameSetting.sensitivity => settingsManager.sensitivity,
+                GameSetting.fov => SettingsManager.fov,
+                GameSetting.sensitivity => SettingsManager.sensitivity,
                 _ => throw new ArgumentOutOfRangeException($"GameSetting {setting} is out of range")
             };
         }
@@ -31,10 +26,10 @@ namespace VoidLib2
             switch (setting)
             {
                 case GameSetting.fov:
-                    settingsManager.fov = value;
+                    SettingsManager.fov = value;
                     return;
                 case GameSetting.sensitivity:
-                    settingsManager.sensitivity = value;
+                    SettingsManager.sensitivity = value;
                     return;
             }
             throw new ArgumentOutOfRangeException($"GameSetting {setting} is out of range");
