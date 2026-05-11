@@ -11,10 +11,8 @@ namespace VoidLib2
         public static bool SetEnabled(bool state)
         {
             if (exitDoor is null || IExitDoor1 is null || IExitDoor2 is null) return false;
-            exitDoor.SetActive(state);
-            IExitDoor1.SetActive(state);
-            IExitDoor2.SetActive(state);
-            return true;
+            exitDoor.GetComponent<MeshRenderer>().enabled = state;
+            return SetCollison(state);
         }
         public static bool SetCollison(bool state)
         {
