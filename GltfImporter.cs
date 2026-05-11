@@ -10,7 +10,7 @@ namespace VoidLib2
     {
         public static GameObject LoadGlb(string path, string? name = null)
         {
-            if (!File.Exists(path)) throw new FileNotFoundException($"Could not find {path}", path);
+            if (!File.Exists(path)) throw new FileNotFoundException($"Could not find '{path}'.", path);
             GltfContainer container;
             using (FileStream fs = new(path, FileMode.Open))
                 container = GltfContainer.FromGlb(fs);
