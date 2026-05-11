@@ -17,109 +17,144 @@ namespace VoidLib2
         private static ColorGrading? GetColorGrading() =>
             _colorGradingField?.GetValue(SettingsManager.Instance) as ColorGrading;
 
-        /// <summary>Sets the master volume.</summary>
-        /// <param name="volume">Volume level in the range (0, 1].</param>
-        public static void SetMasterVolume(float volume)
+        /// <summary>Master volume in the range (0, 1].</summary>
+        public static float MasterVolume
         {
-            SettingsManager.Instance.settings.masterVolume = volume;
-            SettingsManager.Instance.mixer.SetFloat("Master", Mathf.Log10(volume) * 20f);
+            get => SettingsManager.Instance.settings.masterVolume;
+            set
+            {
+                SettingsManager.Instance.settings.masterVolume = value;
+                SettingsManager.Instance.mixer.SetFloat("Master", Mathf.Log10(value) * 20f);
+            }
         }
 
-        /// <summary>Sets the music volume.</summary>
-        /// <param name="volume">Volume level in the range (0, 1].</param>
-        public static void SetMusicVolume(float volume)
+        /// <summary>Music volume in the range (0, 1].</summary>
+        public static float MusicVolume
         {
-            SettingsManager.Instance.settings.musicVolume = volume;
-            SettingsManager.Instance.mixer.SetFloat("Music", Mathf.Log10(volume) * 20f);
+            get => SettingsManager.Instance.settings.musicVolume;
+            set
+            {
+                SettingsManager.Instance.settings.musicVolume = value;
+                SettingsManager.Instance.mixer.SetFloat("Music", Mathf.Log10(value) * 20f);
+            }
         }
 
-        /// <summary>Sets the SFX volume.</summary>
-        /// <param name="volume">Volume level in the range (0, 1].</param>
-        public static void SetSFXVolume(float volume)
+        /// <summary>SFX volume in the range (0, 1].</summary>
+        public static float SFXVolume
         {
-            SettingsManager.Instance.settings.fxVolume = volume;
-            SettingsManager.Instance.mixer.SetFloat("SFX", Mathf.Log10(volume) * 20f);
+            get => SettingsManager.Instance.settings.fxVolume;
+            set
+            {
+                SettingsManager.Instance.settings.fxVolume = value;
+                SettingsManager.Instance.mixer.SetFloat("SFX", Mathf.Log10(value) * 20f);
+            }
         }
 
-        /// <summary>Sets the vocal volume.</summary>
-        /// <param name="volume">Volume level in the range (0, 1].</param>
-        public static void SetVocalVolume(float volume)
+        /// <summary>Vocal volume in the range (0, 1].</summary>
+        public static float VocalVolume
         {
-            SettingsManager.Instance.settings.vocalVolume = volume;
-            SettingsManager.Instance.mixer.SetFloat("Vocals", Mathf.Log10(volume) * 20f);
+            get => SettingsManager.Instance.settings.vocalVolume;
+            set
+            {
+                SettingsManager.Instance.settings.vocalVolume = value;
+                SettingsManager.Instance.mixer.SetFloat("Vocals", Mathf.Log10(value) * 20f);
+            }
         }
 
-        /// <summary>Sets the ambience volume.</summary>
-        /// <param name="volume">Volume level in the range (0, 1].</param>
-        public static void SetAmbienceVolume(float volume)
+        /// <summary>Ambience volume in the range (0, 1].</summary>
+        public static float AmbienceVolume
         {
-            SettingsManager.Instance.settings.ambient = volume;
-            SettingsManager.Instance.mixer.SetFloat("Ambience", Mathf.Log10(volume) * 20f);
+            get => SettingsManager.Instance.settings.ambient;
+            set
+            {
+                SettingsManager.Instance.settings.ambient = value;
+                SettingsManager.Instance.mixer.SetFloat("Ambience", Mathf.Log10(value) * 20f);
+            }
         }
 
-        /// <summary>Sets whether the game runs in fullscreen mode.</summary>
-        /// <param name="fullscreen">True for fullscreen, false for windowed.</param>
-        public static void SetFullscreen(bool fullscreen)
+        /// <summary>Whether the game runs in fullscreen mode.</summary>
+        public static bool Fullscreen
         {
-            SettingsManager.Instance.settings.fullscreen = fullscreen;
-            Screen.fullScreen = fullscreen;
+            get => SettingsManager.Instance.settings.fullscreen;
+            set
+            {
+                SettingsManager.Instance.settings.fullscreen = value;
+                Screen.fullScreen = value;
+            }
         }
 
-        /// <summary>Sets whether VSync is enabled.</summary>
-        /// <param name="vsync">True to enable VSync, false to disable.</param>
-        public static void SetVSync(bool vsync)
+        /// <summary>Whether VSync is enabled.</summary>
+        public static bool VSync
         {
-            SettingsManager.Instance.settings.VSync = vsync;
-            QualitySettings.vSyncCount = vsync ? 1 : 0;
+            get => SettingsManager.Instance.settings.VSync;
+            set
+            {
+                SettingsManager.Instance.settings.VSync = value;
+                QualitySettings.vSyncCount = value ? 1 : 0;
+            }
         }
 
-        /// <summary>Sets the field of view and applies it to the player camera if available.</summary>
-        /// <param name="fov">Field of view in degrees.</param>
-        public static void SetFOV(float fov)
+        /// <summary>Field of view in degrees. Also applies to the player camera if available.</summary>
+        public static float FOV
         {
-            SettingsManager.Instance.settings.fov = fov;
-            SettingsManager.Instance.fov = fov;
-            if (PlayerManager.instance && PlayerManager.instance.playerCam)
-                PlayerManager.instance.playerCam.fieldOfView = fov;
+            get => SettingsManager.Instance.settings.fov;
+            set
+            {
+                SettingsManager.Instance.settings.fov = value;
+                SettingsManager.Instance.fov = value;
+                if (PlayerManager.instance && PlayerManager.instance.playerCam)
+                    PlayerManager.instance.playerCam.fieldOfView = value;
+            }
         }
 
-        /// <summary>Sets the mouse sensitivity and applies it to the player look component if available.</summary>
-        /// <param name="sensitivity">Sensitivity value.</param>
-        public static void SetSensitivity(float sensitivity)
+        /// <summary>Mouse sensitivity. Also applies to the player look component if available.</summary>
+        public static float Sensitivity
         {
-            SettingsManager.Instance.settings.sensitivity = sensitivity;
-            SettingsManager.Instance.sensitivity = sensitivity;
-            if (PlayerManager.instance && PlayerManager.instance.look)
-                PlayerManager.instance.look.sensitivity = sensitivity;
+            get => SettingsManager.Instance.settings.sensitivity;
+            set
+            {
+                SettingsManager.Instance.settings.sensitivity = value;
+                SettingsManager.Instance.sensitivity = value;
+                if (PlayerManager.instance && PlayerManager.instance.look)
+                    PlayerManager.instance.look.sensitivity = value;
+            }
         }
 
-        /// <summary>Sets the screen brightness via post-processing color grading.</summary>
-        /// <param name="brightness">Brightness value.</param>
-        public static void SetBrightness(float brightness)
+        /// <summary>Screen brightness via post-processing color grading.</summary>
+        public static float Brightness
         {
-            SettingsManager.Instance.settings.brightness = brightness;
-            ColorGrading cg = GetColorGrading()!;
-            cg.brightness.value = brightness;
+            get => SettingsManager.Instance.settings.brightness;
+            set
+            {
+                SettingsManager.Instance.settings.brightness = value;
+                ColorGrading? cg = GetColorGrading();
+                if (cg != null)
+                    cg.brightness.value = value;
+            }
         }
 
-        /// <summary>Sets the overall quality level.</summary>
-        /// <param name="index">Quality level index as defined in Unity's Quality Settings.</param>
-        public static void SetQuality(int index)
+        /// <summary>Quality level index as defined in Unity's Quality Settings.</summary>
+        public static int Quality
         {
-            SettingsManager.Instance.settings.qualityIndex = index;
-            QualitySettings.SetQualityLevel(index);
+            get => (int)SettingsManager.Instance.settings.qualityIndex;
+            set
+            {
+                SettingsManager.Instance.settings.qualityIndex = value;
+                QualitySettings.SetQualityLevel(value);
+            }
         }
 
-        /// <summary>
-        /// 0-3 index into { 0, 2, 4, 8 }. Does not match the actual AA sample count.
-        /// </summary>
-        /// <param name="level"></param>
-        public static void SetAntiAliasing(int level)
+        /// <summary>Anti-aliasing level as a 0-3 index into { 0, 2, 4, 8 } sample counts.</summary>
+        public static int AntiAliasing
         {
-            int[] aaOptions = { 0, 2, 4, 8 };
-            level = Mathf.Clamp(level, 0, aaOptions.Length - 1);
-            SettingsManager.Instance.settings.aaLevel = level;
-            QualitySettings.antiAliasing = aaOptions[level];
+            get => Mathf.RoundToInt(SettingsManager.Instance.settings.aaLevel);
+            set
+            {
+                int[] aaOptions = { 0, 2, 4, 8 };
+                value = Mathf.Clamp(value, 0, aaOptions.Length - 1);
+                SettingsManager.Instance.settings.aaLevel = value;
+                QualitySettings.antiAliasing = aaOptions[value];
+            }
         }
     }
 }
