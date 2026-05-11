@@ -4,28 +4,13 @@ namespace VoidLib2
 {
     public static class AudioImporter
     {
-        public class BassError
-        {
-            public readonly int ErrorCode;
-            public readonly string Message;
-            public readonly BassErrorType Type;
-            public override string ToString() => $"[{Type}] {Message} (code {ErrorCode})";
-            public BassError(int errorCode, string message, BassErrorType type)
-            {
-                ErrorCode = errorCode;
-                Message = message;
-                Type = type;
-            }
-        }
-        public enum BassErrorType
-        {
-            Init,
-            Stream,
-            FileNotFound
-        }
-
         static AudioImporter()
         {
+            // device: -1 = default device
+            // freq: 44100 = sample rate in Hz
+            // flags: 0 = no special flags
+            // win: IntPtr.Zero = console/no window handle
+            // clsid: IntPtr.Zero = use default device class
             bool inited = NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
             if (!inited)
             {
@@ -34,12 +19,11 @@ namespace VoidLib2
             }
         }
 
-        public static AudioClip? LoadAudio(string filePath, out BassError? error)
+        public static AudioClip? LoadAudio(string filePath, out int errorCode)
         {
             if (!File.Exists(filePath))
             {
-                error = new BassError(0, $"{filePath}: no such file", BassErrorType.FileNotFound);
-                return null;
+                throw new FileNotFoundException($"Could not find file '{filePath}'.", filePath);
             }
             // Flags: BASS_SAMPLE_FLOAT (256) | BASS_STREAM_DECODE (2097152) | BASS_UNICODE (0x80000000)
             uint flags = 256 | 2097152 | 0x80000000;
@@ -47,8 +31,7 @@ namespace VoidLib2
             int handle = NativeBass.BASS_StreamCreateFile(false, filePath, 0, 0, flags);
             if (handle == 0)
             {
-                int code = NativeBass.BASS_ErrorGetCode();
-                error = new BassError(code, $"stream creation error {code}", BassErrorType.Stream);
+                errorCode = NativeBass.BASS_ErrorGetCode();
                 return null;
             }
             NativeBass.BASS_ChannelGetInfo(handle, out NativeBass.BASS_CHANNELINFO info);
@@ -65,7 +48,7 @@ namespace VoidLib2
             );
             clip.SetData(sampleBuffer, 0);
             NativeBass.BASS_StreamFree(handle);
-            error = null;
+            errorCode = 0;
             return clip;
         }
     }
