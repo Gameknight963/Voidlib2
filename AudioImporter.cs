@@ -24,6 +24,11 @@ namespace VoidLib2
             FileNotFound
         }
 
+        static AudioImporter()
+        {
+            NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
+        }
+
         public static AudioClip? LoadAudio(string filePath, out BassError? error)
         {
             if (!File.Exists(filePath))
@@ -34,7 +39,6 @@ namespace VoidLib2
             // Flags: BASS_SAMPLE_FLOAT (256) | BASS_STREAM_DECODE (2097152) | BASS_UNICODE (0x80000000)
             uint flags = 256 | 2097152 | 0x80000000;
 
-            NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
             int initError = NativeBass.BASS_ErrorGetCode();
             if (initError != 0)
             {
@@ -47,7 +51,7 @@ namespace VoidLib2
             if (handle == 0)
             {
                 int code = NativeBass.BASS_ErrorGetCode();
-                error = new BassError(code, $"stream creation error {NativeBass.BASS_ErrorGetCode()}", BassErrorType.Stream);
+                error = new BassError(code, $"stream creation error {code}", BassErrorType.Stream);
                 return null;
             }
             NativeBass.BASS_ChannelGetInfo(handle, out NativeBass.BASS_CHANNELINFO info);
