@@ -31,8 +31,8 @@ namespace VoidLib2
                 error = new BassError(0, $"{filePath}: no such file", BassErrorType.FileNotFound);
                 return null;
             }
-            // Flags: BASS_SAMPLE_FLOAT (256) | BASS_STREAM_DECODE (2097152)
-            uint flags = 256 | 2097152;
+            // Flags: BASS_SAMPLE_FLOAT (256) | BASS_STREAM_DECODE (2097152) | BASS_UNICODE (0x80000000)
+            uint flags = 256 | 2097152 | 0x80000000;
 
             NativeBass.BASS_Init(-1, 44100, 0, IntPtr.Zero, IntPtr.Zero);
             int initError = NativeBass.BASS_ErrorGetCode();
