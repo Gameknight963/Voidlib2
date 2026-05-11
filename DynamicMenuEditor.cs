@@ -1,5 +1,6 @@
 ﻿using Il2Cpp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace VoidLib2
@@ -15,7 +16,7 @@ namespace VoidLib2
             returnButton = GameObject.Find("Return");
             mainMenu = GameObject.Find("Menu");
             resumeButton = GameObject.Find("Resume");
-            if (returnButton is null || mainMenu is null || resumeButton is null) return false;
+            if (returnButton == null || mainMenu == null || resumeButton == null) return false;
             return true;
         }
 
@@ -28,10 +29,11 @@ namespace VoidLib2
 
         /// <summary>Adds a new menu button</summary>
         /// <param name="posY">The Y position (in the menu's plane) of the button to be created.</param>
+        /// <param name="buttonType">Which kind of button will be created.</param>
         /// <param name="buttonText">The text the button will display.</param>
         /// <param name="name">The name of the GameObject (button) that will be created.</param>
         /// <param name="resultObject">The resulting GameObject.</param>
-        /// <returns>Success bool</returns>
+        /// <returns>Whether the operation was successful or not.</returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         static public bool AddMenuButton(float posY, 
             ButtonType buttonType, 
@@ -40,8 +42,14 @@ namespace VoidLib2
             out GameObject? resultObject)
         {
             resultObject = null;
+            if (SceneManager.GetActiveScene().name != "Version 1.9 POST"
+                || SceneManager.GetActiveScene().name != "Sample Level Setup") return false;
 
-            if (returnButton is null || mainMenu is null || resumeButton is null) return false;
+            if (returnButton == null || mainMenu == null || resumeButton == null)
+            {
+                UpdateCachedGameObjects();
+                if (mainMenu == null) return false;
+            }
 
             RectTransform RectTransform;
             GameObject newButton;
@@ -49,6 +57,7 @@ namespace VoidLib2
             switch (buttonType)
             {
                 case ButtonType.SmallL:
+                    if (mainMenu == null) return false;
                     newButton = UnityEngine.Object.Instantiate(
                     mainMenu, mainMenu.transform);
                     RectTransform = newButton.GetComponent<RectTransform>();
@@ -56,6 +65,7 @@ namespace VoidLib2
                     break;
 
                 case ButtonType.SmallR:
+                    if (returnButton == null) return false;
                     newButton = UnityEngine.Object.Instantiate(
                     returnButton, mainMenu.transform);
                     RectTransform rectTransform = newButton.GetComponent<RectTransform>();
@@ -63,6 +73,7 @@ namespace VoidLib2
                     break;
 
                 case ButtonType.Big:
+                    if (returnButton == null) return false;
                     newButton = UnityEngine.Object.Instantiate(
                     returnButton, mainMenu.transform);
                     RectTransform = newButton.GetComponent<RectTransform>();
