@@ -14,7 +14,7 @@ namespace VoidLib2
             int handle = NativeBass.BASS_StreamCreateFile(false, filePath, 0, 0, flags);
             if (handle == 0) return null;
             NativeBass.BASS_ChannelGetInfo(handle, out NativeBass.BASS_CHANNELINFO info);
-            long lengthBytes = NativeBass.BASS_ChannelGetLength(handle, 0); // BASS_POS_BYTE
+            long lengthBytes = NativeBass.BASS_ChannelGetLength(handle, 0 /* BASS_POS_BYTE */);
             int totalSamples = (int)(lengthBytes / 4);
             float[] sampleBuffer = new float[totalSamples];
             NativeBass.BASS_ChannelGetData(handle, sampleBuffer, (int)lengthBytes);

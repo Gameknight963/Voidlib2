@@ -17,9 +17,9 @@ namespace VoidLib2
         public static bool SetCollison(bool state)
         {
             if (exitDoor is null || IExitDoor1 is null || IExitDoor2 is null) return false;
-            exitDoor.GetComponent<BoxCollider>().enabled = false;
-            IExitDoor1.GetComponent<BoxCollider>().enabled = false;
-            IExitDoor2.GetComponent<BoxCollider>().enabled = false;
+            exitDoor.GetComponent<BoxCollider>().enabled = state;
+            IExitDoor1.GetComponent<BoxCollider>().enabled = state;
+            IExitDoor2.GetComponent<BoxCollider>().enabled = state;
             return true;
         }
     }
