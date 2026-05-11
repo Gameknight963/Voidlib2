@@ -19,7 +19,7 @@ namespace VoidLib2
             }
         }
 
-        public static AudioClip? LoadAudio(string filePath, out int errorCode)
+        public static AudioClip? LoadAudio(string filePath, out int code)
         {
             if (!File.Exists(filePath))
             {
@@ -31,7 +31,7 @@ namespace VoidLib2
             int handle = NativeBass.BASS_StreamCreateFile(false, filePath, 0, 0, flags);
             if (handle == 0)
             {
-                errorCode = NativeBass.BASS_ErrorGetCode();
+                code = NativeBass.BASS_ErrorGetCode();
                 return null;
             }
             NativeBass.BASS_ChannelGetInfo(handle, out NativeBass.BASS_CHANNELINFO info);
@@ -48,7 +48,7 @@ namespace VoidLib2
             );
             clip.SetData(sampleBuffer, 0);
             NativeBass.BASS_StreamFree(handle);
-            errorCode = 0;
+            code = 0;
             return clip;
         }
     }
