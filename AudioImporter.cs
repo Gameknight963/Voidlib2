@@ -8,65 +8,61 @@ namespace VoidLib2
         public readonly struct ImportResult
         {
             public readonly int Value;
-            public readonly ResultType Type;
-            public bool Success => Type == ResultType.Success;
+            public readonly bool WasAttempted;
+            public bool Success => WasAttempted && Value == 0;
 
-            public static ImportResult Ok => new(0, ResultType.Success);
+            public static ImportResult Ok => new(0, true);
+            public static ImportResult NotAttempted => new(0, false);
 
-            public ImportResult(int value, ResultType type)
+            public ImportResult(int value, bool attemped = false)
             {
                 Value = value;
-                Type = type;
-            }
-
-            public enum ResultType
-            {
-                Success,
-                BassError,
-                NAudioError,
-                BassPInvokeError,
-                NAudioNotFound
+                WasAttempted = attemped;
             }
         }
 
-        public static AudioClip? Load(string filePath, out ImportResult result)
+        public static AudioClip? Load(string filePath, out ImportResult bassImportResult, out ImportResult naudioImportResult)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Could not find file '{filePath}'.", filePath);
+
+            bassImportResult = ImportResult.NotAttempted;
             try
             {
+
                 AudioClip? clip = Bass.LoadAudio(filePath, out int bassCode);
                 if (bassCode == 0)
                 {
-                    result = ImportResult.Ok;
+                    bassImportResult = ImportResult.Ok;
+                    naudioImportResult = ImportResult.NotAttempted;
                     return clip;
                 }
             }
             catch (DllNotFoundException ex)
             {
-                result = new ImportResult(ex.HResult, ImportResult.ResultType.BassPInvokeError);
-                return null;
+                bassImportResult = new ImportResult(ex.HResult, true);
             }
             catch (EntryPointNotFoundException ex)
             {
-                result = new ImportResult(ex.HResult, ImportResult.ResultType.BassPInvokeError);
-                return null;
+                bassImportResult = new ImportResult(ex.HResult, true);
             }
+
+            if (!bassImportResult.WasAttempted) throw new Exception("unreachable");
 
             try
             {
                 AudioClip? naudioClip = NAudio.Load(filePath, out int naudioHResult);
                 if (naudioHResult == 0)
                 {
-                    result = ImportResult.Ok;
+                    naudioImportResult = ImportResult.Ok;
                     return naudioClip;
                 }
-                result = new ImportResult(naudioHResult, ImportResult.ResultType.NAudioError);
+                naudioImportResult = new ImportResult(naudioHResult);
                 return null;
             }
             catch (DllNotFoundException ex)
             {
-                result = new ImportResult(ex.HResult, ImportResult.ResultType.NAudioNotFound);
+                naudioImportResult = new ImportResult(ex.HResult);
                 return null;
             }
         }
