@@ -35,6 +35,18 @@
     <Reference Include="MelonLoader">
       <HintPath>deps\net6\MelonLoader.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>deps\lib\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Core">
+      <HintPath>deps\lib\NAudio.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Wasapi">
+      <HintPath>deps\lib\NAudio.Wasapi.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinMM">
+      <HintPath>deps\lib\NAudio.WinMM.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>deps\net6\Newtonsoft.Json.dll</HintPath>
     </Reference>

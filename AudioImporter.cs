@@ -1,13 +1,136 @@
-﻿using UnityEngine;
+﻿using NAudio.Wave;
+using UnityEngine;
 
 namespace VoidLib2
 {
+    public static class AudioImporter
+    {
+        public readonly struct ImportResult
+        {
+            public readonly int Value;
+            public readonly ResultType Type;
+            public bool Success => Type == ResultType.Success;
+
+            public static ImportResult Ok => new(0, ResultType.Success);
+
+            public ImportResult(int value, ResultType type)
+            {
+                Value = value;
+                Type = type;
+            }
+
+            public enum ResultType
+            {
+                Success,
+                BassError,
+                NAudioError,
+                BassPInvokeError,
+                NAudioNotFound
+            }
+        }
+
+        public static AudioClip? Load(string filePath, out ImportResult result)
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"Could not find file '{filePath}'.", filePath);
+            try
+            {
+                AudioClip? clip = Bass.LoadAudio(filePath, out int bassCode);
+                if (bassCode == 0)
+                {
+                    result = ImportResult.Ok;
+                    return clip;
+                }
+            }
+            catch (DllNotFoundException ex)
+            {
+                result = new ImportResult(ex.HResult, ImportResult.ResultType.BassPInvokeError);
+                return null;
+            }
+            catch (EntryPointNotFoundException ex)
+            {
+                result = new ImportResult(ex.HResult, ImportResult.ResultType.BassPInvokeError);
+                return null;
+            }
+
+            try
+            {
+                AudioClip? naudioClip = NAudio.Load(filePath, out int naudioHResult);
+                if (naudioHResult == 0)
+                {
+                    result = ImportResult.Ok;
+                    return naudioClip;
+                }
+                result = new ImportResult(naudioHResult, ImportResult.ResultType.NAudioError);
+                return null;
+            }
+            catch (DllNotFoundException ex)
+            {
+                result = new ImportResult(ex.HResult, ImportResult.ResultType.NAudioNotFound);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Requires NAudio.dll, NAudio.Core.dll, NAudio.Wasapi.dll, NAudio.WinMN.dll
+        /// </summary>
+        public static class NAudio
+        {
+            public static AudioClip? Load(string filePath, out int HResult)
+            {
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException(filePath);
+
+                try
+                {
+                    using AudioFileReader reader = new(filePath);
+                    int channels = reader.WaveFormat.Channels;
+                    int sampleRate = reader.WaveFormat.SampleRate;
+
+                    float[] samples = ReadAllSamples(reader);
+
+                    AudioClip clip = AudioClip.Create(
+                        Path.GetFileNameWithoutExtension(filePath),
+                        samples.Length / channels,
+                        channels,
+                        sampleRate,
+                        false
+                    );
+                    clip.SetData(samples, 0);
+                    HResult = 0;
+                    return clip;
+                }
+                catch (Exception ex)
+                {
+                    HResult = ex.HResult;
+                    return null;
+                }
+            }
+
+            private static float[] ReadAllSamples(AudioFileReader reader)
+            {
+                List<float> sampleList = new((int)(reader.Length / 4));
+
+                float[] buffer = new float[4096];
+                int read;
+
+                while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    for (int i = 0; i < read; i++)
+                        sampleList.Add(buffer[i]);
+                }
+
+                return sampleList.ToArray();
+            }
+        }
+    }
+
     /// <summary>
     /// Requires bass.dll
     /// </summary>
-    public static class AudioImporter
+    public static class Bass
     {
-        static AudioImporter()
+        static Bass()
         {
             // device: -1 = default device
             // freq: 44100 = sample rate in Hz
