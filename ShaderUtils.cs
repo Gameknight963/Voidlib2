@@ -12,9 +12,9 @@ namespace VoidLib2
         /// <param name="shader">The shader to assign.</param>
         public static void SetShaderRecursive(GameObject root, Shader shader)
         {
-            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>(true);
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
 
-            foreach (MeshRenderer mr in renderers)
+            foreach (Renderer mr in renderers)
             {
                 Material[] mats = mr.materials;
                 for (int i = 0; i < mats.Length; i++)
@@ -31,9 +31,9 @@ namespace VoidLib2
         /// <param name="color">Color to assign</param>
         public static void SetColorRecursive(GameObject root, Color color)
         {
-            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>(true);
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
 
-            foreach (MeshRenderer mr in renderers)
+            foreach (Renderer mr in renderers)
             {
                 Material[] mats = mr.materials;
                 for (int i = 0; i < mats.Length; i++)
