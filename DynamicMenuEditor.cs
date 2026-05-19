@@ -11,7 +11,7 @@ namespace VoidLib2
         private static GameObject? mainMenu;
         private static GameObject? resumeButton;
 
-        public static bool UpdateCachedGameObjects()
+        private static bool UpdateCachedGameObjects()
         {
             returnButton = GameObject.Find("Return");
             mainMenu = GameObject.Find("Menu");
@@ -35,7 +35,7 @@ namespace VoidLib2
         /// <param name="resultObject">The resulting GameObject.</param>
         /// <returns>Whether the operation was successful or not.</returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        static public bool AddMenuButton(float posY, 
+        public static bool AddMenuButton(float posY, 
             ButtonType buttonType, 
             string buttonText, 
             string name, 
